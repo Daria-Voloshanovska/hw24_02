@@ -6,54 +6,96 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@DisplayName("Tests for findDuplicatePerson Method")
 class MainTest {
 
 
+
+
+
     @Nested
-    @DisplayName("Tests for Finding Duplicate Persons in a List")
-    class FindDuplicatesPersonTests{
+    public class Test_findCommonPerson{
+
+
+       @Test
+        @DisplayName("list has common person")
+        public void listHasCommonPerson(){
+            List<Person> list1 = List.of(
+                    new Person("Jack", 12),
+                    new Person("John", 22),
+                    new Person("Jack", 22),
+                    new Person("Oleg", 24)
+            );
+            List<Person> list2 = List.of(
+                    new Person("John", 22),
+                    new Person("Jack", 22),
+                    new Person("Oleg", 24),
+                    new Person("Lena", 25),
+                    new Person("Irina", 23)
+            );
+
+            Set<Person> expected = Set.of(
+                    new Person("John", 22),
+                    new Person("Jack", 22),
+                    new Person("Oleg", 24)
+            );
+            Set<Person> actual = Main.findCommonPerson(list1,list2);
+            Assertions.assertEquals(expected,actual);
+        }
+
+        @Test
+        @DisplayName("lists have not common person")
+        public void listHasNotCommonPerson(){
+            List<Person> list1 = List.of(
+                    new Person("Jack", 12),
+                    new Person("John", 22),
+                    new Person("Jack", 22),
+                    new Person("Oleg", 24)
+            );
+            List<Person> list2 = List.of(
+
+                    new Person("Lena", 25),
+                    new Person("Irina", 23)
+            );
+
+
+
+            Set<Person> actual = Main.findCommonPerson(list1,list2);
+            Assertions.assertTrue(actual.isEmpty());
+        }
+
+        @Test
+        @DisplayName("list1 is null, expected empty list")
+        public void list1Null(){
+            List<Person> list1 = null;
+            List<Person> list2 = List.of(
+
+                    new Person("Lena", 25),
+                    new Person("Irina", 23)
+            );
+
+            Set<Person> actual = Main.findCommonPerson(list1,list2);
+            Assertions.assertTrue(actual.isEmpty());
+        }
+        @Test
+        @DisplayName("list2 is null, expected empty list")
+        public void list2Null(){
+            List<Person> list2 = null;
+            List<Person> list1 = List.of(
+
+                    new Person("Lena", 25),
+                    new Person("Irina", 23)
+            );
+
+            Set<Person> actual = Main.findCommonPerson(list1,list2);
+            Assertions.assertTrue(actual.isEmpty());
+        }
+        @Test
+        @DisplayName("list1 and list2 are null, expected empty list")
+        public void listsNull(){
+            Set<Person> actual = Main.findCommonPerson(null,null);
+            Assertions.assertTrue(actual.isEmpty());
+        }
 
     }
-    @Test
-    @DisplayName("Duplicates are present in the list")
-    void testDuplicatesPresent() {
-        List<Person> personList = List.of(
-                new Person("Jack",30),
-                new Person("Bob",26),
-                new Person("Jack",30),
-                new Person("John",43),
-                new Person("Bob",26),
-                new Person("Olga",24)
-        );
 
-        Set<Person> duplicates = Main.findDuplicatePerson(personList);
-        Assertions.assertEquals(2, duplicates.size(), "Expected 2 duplicates");
-        Assertions.assertTrue(duplicates.contains(new Person("Jack", 30)));
-        Assertions.assertTrue(duplicates.contains(new Person("Bob", 26)));
-    }
-    @Test
-    @DisplayName("No duplicates in the list")
-    void testNoDuplicates() {
-        List<Person> personList = List.of(
-                new Person("Jack", 30),
-                new Person("Bob", 26),
-                new Person("John", 43),
-                new Person("Olga", 24)
-        );
-
-        Set<Person> duplicates = Main.findDuplicatePerson(personList);
-        Assertions.assertTrue(duplicates.isEmpty(), "Expected an empty duplicate list");
-
-    }
-
-    @Test
-    @DisplayName("Empty list test")
-    void testEmptyList() {
-        List<Person> personList = List.of();
-        Set<Person> duplicates = Main.findDuplicatePerson(personList);
-        Assertions.assertTrue(duplicates.isEmpty(), "Expected an empty duplicate list");
-    }
 }
